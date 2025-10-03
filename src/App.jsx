@@ -20,7 +20,7 @@ function App() {
   return (
     <BrowserRouter>
       <div className="app-layout" style={{ display: 'flex', flexDirection: 'column', minHeight: '100vh' }}>
-        <Header />
+  <Header />
   <Nav onSearch={setSearchTerm} user={user} onLogin={setUser} onLogout={() => setUser(null)} />
 
         <div style={{ flex: 1 }}>

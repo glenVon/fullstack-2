@@ -54,23 +54,29 @@ header {
     background: rgba(0, 0, 0, 0.45);
     color: #fff;
     width: 100%;
-    margin-top: 10px;
-    margin-bottom: 7px;
+    padding: 1px;
+    margin-top: 50px;
+    margin-bottom: 1px;
+    border-radius: 29px;
+    height: 60px; /*este es el contorno de la barra */
 }
 
 .top-nav-links {
     display: inline-flex;
-    gap: 8px;
+    gap: 18px;
     align-items: center;
+    
+    
+    
 }
 
 .nav-link {
     display: inline-block;
-    padding: 10px 14px;
+    padding: 5px 14px;
     color: #e6e6e6;
     text-decoration: none;
     font-weight: 600;
-    border-radius: 6px;
+    border-radius: 10px;
     transition: background 0.18s, color 0.18s;
     font-size: 15px;
 }
@@ -78,23 +84,31 @@ header {
 .nav-link:hover {
     background: rgba(255,255,255,0.06);
     color: #fff;
+    margin-top: 6px;
+    margin-bottom: 10px;
+    
+    
 }
 
 .nav-link.active {
     background: #007bff;
     color: #fff;
+    
 }
 
-/* Uniformar tamaño de la barra y elementos */
+/* esta es la barra de busqueda */
 header .buscar {
     padding: 8px 10px;
     border-radius: 8px;
-    border: 1px solid rgba(0,0,0,0.2);
+    border: 1px solid rgba(0, 0, 0, 0.945);
     min-width: 220px;
+    
+    
+    
 }
 
 header button {
-    padding: 8px 12px;
+    padding: 8px 22px;
     border-radius: 8px;
     border: none;
     background: rgba(255,255,255,0.08);
@@ -104,10 +118,12 @@ header button {
 
 header button:hover {
     background: rgba(255,255,255,0.12);
+    margin: 5px;
+    
 }
 
 .contenedor {
-    margin-top: 70px;
+    margin-top: 20px;
     margin-left: 16px;
     height: auto;
     border-radius: 10px;
@@ -180,7 +196,7 @@ header button:hover {
 
 label {
   display: block;
-  margin-bottom: 7px;
+  margin-bottom: 3px;
   font-weight: bold;
 }
 

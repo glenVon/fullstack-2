@@ -56,7 +56,7 @@ export const Nav = ({ onSearch, user, onLogin, onLogout }) => {
             className="buscar"
             value={term}
             onChange={(e) => { setTerm(e.target.value); emitSearch(e.target.value); }}
-            style={{ padding: '6px 8px' }}
+            style={{ padding: '6px 8px', marginTop: '0px', marginBottom: '1px' }}//aqui esta el buscador
           />
         </form>
 

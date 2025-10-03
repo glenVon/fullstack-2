@@ -102,7 +102,7 @@ export const Body = ({ searchTerm = '' }) => {
       <a href={producto.enlace}>
         <img 
           className={`a${producto.id}`}
-          src={getImagenUrl(producto.imagen)}
+          src={getImagenUrl(producto.imagen, producto.nombre)}
           alt={producto.nombre}
         />
       </a>
@@ -110,7 +110,7 @@ export const Body = ({ searchTerm = '' }) => {
   );
 
   // Función para resolver la URL real de la imagen usando el mapa generado por import.meta.glob
-  function getImagenUrl(rutaOriginal) {
+  function getImagenUrl(rutaOriginal, productoNombre) {
     if (!rutaOriginal) return '';
 
     // extraer solo el nombre del archivo
@@ -131,6 +131,19 @@ export const Body = ({ searchTerm = '' }) => {
     const keys = Object.keys(imagenMap);
     const parcial = keys.find(k => k.includes(nombreArchivo.replace(/\.[^.]+$/, '')));
     if (parcial) return imagenMap[parcial];
+
+    // 4) Intento adicional: si se nos pasa el nombre del producto, buscar coincidencias
+    // por nombre normalizado entre los basenames disponibles.
+    if (productoNombre) {
+      const target = normalize(productoNombre).replace(/\s+/g, ' ');
+      for (const k of keys) {
+        const baseNoExt = k.replace(/\.[^.]+$/, '');
+        const normKey = normalize(baseNoExt).replace(/\s+/g, ' ');
+        if (normKey.includes(target) || target.includes(normKey)) {
+          return imagenMap[k];
+        }
+      }
+    }
 
     // 4) como fallback, devolver la ruta original (puede funcionar si usas /public)
     return rutaOriginal;
