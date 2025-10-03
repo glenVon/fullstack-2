@@ -1,0 +1,256 @@
+* {
+  /* margin: 0; */
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  background-image: url('./images/eva.jpg'); /* Ruta desde index.css */
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+  min-height: 100vh;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+    sans-serif;
+}
+
+.titulo {
+    text-align: center;
+    font-size: 50px;
+    color: white;
+    margin-top: 150px;
+    margin-bottom: 20px;
+    font-family:gothic;
+    text-shadow: 2px 2px 4px #68fa14;
+    position: absolute ;
+}
+
+.navbar {
+    padding: 10px;
+    display: flex;
+    align-items: center;
+    padding-right: 100px;
+
+    .ima {
+        height: 70px;
+        margin-right: 7px;
+        
+    }
+
+    .nav-links {
+        display: block;
+        list-style: none;
+        margin-left: auto;
+        padding-bottom: 10px;
+        
+        
+    }
+}
+
+/* Barra superior personalizada */
+header {
+    background: rgba(0, 0, 0, 0.45);
+    color: #fff;
+    width: 100%;
+    margin-top: 10px;
+    margin-bottom: 7px;
+}
+
+.top-nav-links {
+    display: inline-flex;
+    gap: 8px;
+    align-items: center;
+}
+
+.nav-link {
+    display: inline-block;
+    padding: 10px 14px;
+    color: #e6e6e6;
+    text-decoration: none;
+    font-weight: 600;
+    border-radius: 6px;
+    transition: background 0.18s, color 0.18s;
+    font-size: 15px;
+}
+
+.nav-link:hover {
+    background: rgba(255,255,255,0.06);
+    color: #fff;
+}
+
+.nav-link.active {
+    background: #007bff;
+    color: #fff;
+}
+
+/* Uniformar tamaño de la barra y elementos */
+header .buscar {
+    padding: 8px 10px;
+    border-radius: 8px;
+    border: 1px solid rgba(0,0,0,0.2);
+    min-width: 220px;
+}
+
+header button {
+    padding: 8px 12px;
+    border-radius: 8px;
+    border: none;
+    background: rgba(255,255,255,0.08);
+    color: #fff;
+    cursor: pointer;
+}
+
+header button:hover {
+    background: rgba(255,255,255,0.12);
+}
+
+.contenedor {
+    margin-top: 70px;
+    margin-left: 16px;
+    height: auto;
+    border-radius: 10px;
+    
+/* Estilos base comunes para todas las imágenes */
+.a1, .a2, .a3, .a4, .a5, .a6, .a7, .a8, 
+.a9, .a10, .a11, .a12, .a13, .a14, .a15, 
+.a16, .a17, .a18 {
+    width: 200px;
+    height: auto;
+    border: 5px solid #020500;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    transition: transform 0.3s, box-shadow 0.3s;
+    margin-top: 9px;
+    margin-left: 16px;
+}
+   
+
+}
+
+.footer {
+    
+        text-align: center;
+        font-size: 14px;
+        color: rgba(255, 255, 255, 0.521);
+        margin-top: 5px;
+        margin-bottom: 20px;
+        font-family:gothic;
+        text-shadow: 1px 1px 2px #000000;
+}
+
+
+/* Fondo oscuro que cubre toda la pantalla */
+.popup-overlay {
+    display: none; /* Oculto por defecto */
+    position: fixed; /* Se mantiene en el mismo lugar al hacer scroll */
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.6); /* Fondo semi-transparente */
+    z-index: 1000; /* Asegura que el popup esté encima de otros elementos */
+    justify-content: center; /* Centra el contenido horizontalmente */
+    align-items: center; /* Centra el contenido verticalmente */
+}
+
+/* Contenido del popup */
+.popup-content {
+    background-color: rgb(173, 171, 171);
+    padding: 20px;
+    border-radius: 5px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+    position: relative; /* Para posicionar el botón de cerrar */
+    width: 100%;
+    max-width: 400px; /* Ancho máximo del popup */
+    text-align: center; /* Centra el texto dentro del contenido */
+}
+
+/* Estilo del botón de cerrar */
+.cerrarPopup {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background: none;
+    border: none;
+    font-size: 20px;
+    cursor: pointer;
+}
+
+label {
+  display: block;
+  margin-bottom: 7px;
+  font-weight: bold;
+}
+
+input[type="text"],
+input[type="email"],
+input[type="password"] {
+  width: 40%;
+  padding: 8px;
+  padding-top: 5px;
+  margin-top: 60px;
+  margin-right: 4px;
+  margin-bottom: 16px;
+  border: 1px solid #ccc;
+  border-radius: 9px;
+  box-sizing: border-box; /* Para incluir padding y borde en el ancho */
+}
+
+button[type="submit"] {
+  background-color: #4CAF50;
+  color: white;
+  margin: 10px 0;
+  margin-top: 10px;
+  margin-bottom: -11px;
+  padding: 10px 15px;
+  border: none;
+  border-radius: 40px;
+  cursor: pointer;
+  width: 100%;
+}
+
+button[type="submit"]:hover {
+  background-color: #45a049;
+}
+
+.producto {
+    position: relative;
+    display: inline-block;
+    margin: 10px;
+}
+
+.producto-overlay {
+    position: absolute;
+    top: 8px;
+    left: 8px;
+    right: 8px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    z-index: 2;
+}
+
+.precio {
+    background: rgba(0,0,0,0.7);
+    color: #fff;
+    padding: 4px 8px;
+    border-radius: 6px;
+    font-weight: bold;
+    font-size: 1rem;
+}
+
+.carrito-icono {
+    background: #fff;
+    border-radius: 50%;
+    padding: 4px;
+    cursor: pointer;
+    font-size: 1.2rem;
+    margin-left: 8px;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+    transition: background 0.2s;
+}
+.carrito-icono:hover {
+    background: #e0e0e0;
+}
