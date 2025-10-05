@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
-import '../../index.css' // Asegúrate de tener este archivo CSS
-
+import '../../index.css';
 
 const productos = [
   { id: 1, nombre: "New Mutants Combate el Futuro 3 de 3", precio: 5990, imagen: "./assets/covers/new mutants combate el futuro 3 de 3.jpg", enlace: "/compra.html" },
@@ -20,11 +19,22 @@ const productos = [
   { id: 15, nombre: "Dark Reign: The Invincible Iron Man 12", precio: 5990, imagen: "/assets/covers/dark reign the invincible iron man 12.jpg", enlace: "/compra.html" },
   { id: 16, nombre: "The Incredible Hercules 126", precio: 5990, imagen: "/assets/covers/the incredible hercules 126.jpg", enlace: "/compra.html" },
   { id: 17, nombre: "Punisher 9", precio: 5990, imagen: "/assets/covers/punisher 9.jpg", enlace: "/compra.html" },
-  { id: 18, nombre: "X-Men Black 1 - Mystique", precio: 5990, imagen: "/assets/covers/x-men black 1 Mistique.jpg", enlace: "/compra.html" }
+  { id: 18, nombre: "X-Men Black 1 - Mystique", precio: 5990, imagen: "/assets/covers/x-men black 1 Mistique.jpg", enlace: "/compra.html" },
+  { id: 19, nombre: "age-on-cuneree", precio: 5990, imagen: "/assets/covers/age-on-cuneree.jpg", enlace: "/compra.html" },
+  { id: 20, nombre: "astonish x-men 13", precio: 5990, imagen: "/assets/covers/astonish x-men 13.jpg", enlace: "/compra.html" },
+  { id: 21, nombre: "astonish x-men 66", precio: 5990, imagen: "/assets/covers/astonish x-men 66.jpg", enlace: "/compra.html" },
+  { id: 22, nombre: "astonish x-men 32", precio: 5990, imagen: "/assets/covers/astonish x-men 32.jpg", enlace: "/compra.html" },
+  { id: 23, nombre: "astonish x-men xenogenesis 3 de 5", precio: 5990, imagen: "/assets/covers/astonish x-men xenogenesis 3 de 5.jpg", enlace: "/compra.html" },
+  { id: 24, nombre: "cable 31", precio: 5990, imagen: "/assets/covers/cable 31.jpg", enlace: "/compra.html" },
+  { id: 25, nombre: "clasic x-men 1", precio: 5990, imagen: "/assets/covers/clasic x-men 1.jpg", enlace: "/compra.html" },
+  { id: 26, nombre: "clasic x-men 2", precio: 5990, imagen: "/assets/covers/clasic x-men 2.jpg", enlace: "/compra.html" },
+  { id: 27, nombre: "d-marvel-u", precio: 5990, imagen: "/assets/covers/d-marvel-u.jpg", enlace: "/compra.html" },
+  { id: 28, nombre: "dark reign avengers la iniciativa 20", precio: 5990, imagen: "/assets/covers/dark reign avengers la iniciativa 20.jpg", enlace: "/compra.html" },
+  { id: 29, nombre: "dark reign the list hulk 1", precio: 5990, imagen: "/assets/covers/dark reign the list hulk 1.jpg", enlace: "/compra.html" },
+  { id: 30, nombre: "dark-wolverine-ten-f-al", precio: 5990, imagen: "/assets/covers/dark-wolverine-ten-f-al.jpg", enlace: "/compra.html" }
 ];
 
 // Cargar todas las imágenes de covers en tiempo de compilación con Vite
-// Esto genera un objeto donde la key es la ruta relativa y el valor es la URL procesada por Vite
 const _imagenesCovers = import.meta.glob('../../images/covers/**/*.{jpg,jpeg,png}', { eager: true, as: 'url' });
 
 // Normalizamos a un mapa por nombre de archivo en minúsculas para buscar fácilmente
@@ -48,6 +58,45 @@ function filterProductos(lista, term) {
   if (!term) return lista;
   const t = normalize(term);
   return lista.filter(p => normalize(p.nombre).includes(t));
+}
+
+// Función para resolver la URL real de la imagen
+function getImagenUrl(rutaOriginal, productoNombre) {
+  if (!rutaOriginal) return '';
+
+  // extraer solo el nombre del archivo
+  const partes = rutaOriginal.split('/');
+  const nombreArchivo = partes[partes.length - 1].toLowerCase();
+
+  // Intentos de búsqueda:
+  // 1) nombre tal cual en minúsculas
+  if (imagenMap[nombreArchivo]) return imagenMap[nombreArchivo];
+
+  // 2) reemplazar espacios por '%20' o por guiones bajos
+  const reemplazos = [nombreArchivo.replace(/ /g, '%20'), nombreArchivo.replace(/ /g, '_'), nombreArchivo.replace(/ /g, '-')];
+  for (const r of reemplazos) {
+    if (imagenMap[r]) return imagenMap[r];
+  }
+
+  // 3) buscar por coincidencia parcial (contiene) - toma la primera coincidencia
+  const keys = Object.keys(imagenMap);
+  const parcial = keys.find(k => k.includes(nombreArchivo.replace(/\.[^.]+$/, '')));
+  if (parcial) return imagenMap[parcial];
+
+  // 4) Intento adicional: si se nos pasa el nombre del producto, buscar coincidencias
+  if (productoNombre) {
+    const target = normalize(productoNombre).replace(/\s+/g, ' ');
+    for (const k of keys) {
+      const baseNoExt = k.replace(/\.[^.]+$/, '');
+      const normKey = normalize(baseNoExt).replace(/\s+/g, ' ');
+      if (normKey.includes(target) || target.includes(normKey)) {
+        return imagenMap[k];
+      }
+    }
+  }
+
+  // 5) como fallback, devolver la ruta original
+  return rutaOriginal;
 }
 
 export const Body = ({ searchTerm = '' }) => {
@@ -101,7 +150,7 @@ export const Body = ({ searchTerm = '' }) => {
       </div>
       <a href={producto.enlace}>
         <img 
-          className={`a${producto.id}`}
+          className="producto-imagen"
           src={getImagenUrl(producto.imagen, producto.nombre)}
           alt={producto.nombre}
         />
@@ -109,75 +158,108 @@ export const Body = ({ searchTerm = '' }) => {
     </div>
   );
 
-  // Función para resolver la URL real de la imagen usando el mapa generado por import.meta.glob
-  function getImagenUrl(rutaOriginal, productoNombre) {
-    if (!rutaOriginal) return '';
-
-    // extraer solo el nombre del archivo
-    const partes = rutaOriginal.split('/');
-    const nombreArchivo = partes[partes.length - 1].toLowerCase();
-
-    // Intentos de búsqueda:
-    // 1) nombre tal cual en minúsculas
-    if (imagenMap[nombreArchivo]) return imagenMap[nombreArchivo];
-
-    // 2) reemplazar espacios por '%20' o por guiones bajos
-    const reemplazos = [nombreArchivo.replace(/ /g, '%20'), nombreArchivo.replace(/ /g, '_'), nombreArchivo.replace(/ /g, '-')];
-    for (const r of reemplazos) {
-      if (imagenMap[r]) return imagenMap[r];
-    }
-
-    // 3) buscar por coincidencia parcial (contiene) - toma la primera coincidencia
-    const keys = Object.keys(imagenMap);
-    const parcial = keys.find(k => k.includes(nombreArchivo.replace(/\.[^.]+$/, '')));
-    if (parcial) return imagenMap[parcial];
-
-    // 4) Intento adicional: si se nos pasa el nombre del producto, buscar coincidencias
-    // por nombre normalizado entre los basenames disponibles.
-    if (productoNombre) {
-      const target = normalize(productoNombre).replace(/\s+/g, ' ');
-      for (const k of keys) {
-        const baseNoExt = k.replace(/\.[^.]+$/, '');
-        const normKey = normalize(baseNoExt).replace(/\s+/g, ' ');
-        if (normKey.includes(target) || target.includes(normKey)) {
-          return imagenMap[k];
-        }
-      }
-    }
-
-    // 4) como fallback, devolver la ruta original (puede funcionar si usas /public)
-    return rutaOriginal;
-  }
-
   const CarritoPopup = () => {
     if (!mostrarCarrito) return null;
 
     return (
-      <div className="popup-overlay">
+      <div className="popup-overlay active">
         <div className="popup-content">
-          <h2>Carrito</h2>
-          <ul>
-            {carrito.map(item => (
-              <li key={item.id}>
-                {item.nombre} x{item.cantidad} - ${(item.precio * item.cantidad).toLocaleString('es-CL')}
-              </li>
-            ))}
-          </ul>
-          <p>Total: ${calcularTotal().toLocaleString('es-CL')}</p>
-          
-          {!modoPago ? (
-            <>
-              <button onClick={() => setModoPago(true)}>Pagar</button>
-              <button onClick={() => setMostrarCarrito(false)}>Seguir Comprando</button>
-            </>
+          <h2>Carrito de Compras</h2>
+          {carrito.length === 0 ? (
+            <p>Tu carrito está vacío</p>
           ) : (
             <>
-              <h3>Selecciona forma de pago</h3>
-              <button onClick={() => pagar('debito')}>Débito</button>
-              <button onClick={() => pagar('credito')}>Crédito</button>
-              <button onClick={() => pagar('paypal')}>PayPal</button>
-              <button onClick={() => setModoPago(false)}>Cancelar</button>
+              <ul style={{ listStyle: 'none', padding: 0, maxHeight: '300px', overflowY: 'auto' }}>
+                {carrito.map(item => (
+                  <li key={item.id} style={{ 
+                    padding: '10px', 
+                    borderBottom: '1px solid #ddd',
+                    display: 'flex',
+                    justifyContent: 'space-between',
+                    alignItems: 'center'
+                  }}>
+                    <div>
+                      <strong>{item.nombre}</strong>
+                      <br />
+                      <small>Cantidad: {item.cantidad}</small>
+                    </div>
+                    <div>${(item.precio * item.cantidad).toLocaleString('es-CL')}</div>
+                  </li>
+                ))}
+              </ul>
+              <div style={{ marginTop: '20px', padding: '10px', backgroundColor: '#f5f5f5', borderRadius: '5px' }}>
+                <strong>Total: ${calcularTotal().toLocaleString('es-CL')}</strong>
+              </div>
             </>
+          )}
+          
+          {!modoPago ? (
+            <div style={{ marginTop: '20px', display: 'flex', gap: '10px', justifyContent: 'center' }}>
+              {carrito.length > 0 && (
+                <button 
+                  onClick={() => setModoPago(true)}
+                  style={{
+                    padding: '10px 20px',
+                    backgroundColor: '#007bff',
+                    color: 'white',
+                    border: 'none',
+                    borderRadius: '5px',
+                    cursor: 'pointer'
+                  }}
+                >
+                  Proceder al Pago
+                </button>
+              )}
+              <button 
+                onClick={() => setMostrarCarrito(false)}
+                style={{
+                  padding: '10px 20px',
+                  backgroundColor: '#6c757d',
+                  color: 'white',
+                  border: 'none',
+                  borderRadius: '5px',
+                  cursor: 'pointer'
+                }}
+              >
+                {carrito.length > 0 ? 'Seguir Comprando' : 'Cerrar'}
+              </button>
+              {carrito.length > 0 && (
+                <button 
+                  onClick={vaciarCarrito}
+                  style={{
+                    padding: '10px 20px',
+                    backgroundColor: '#dc3545',
+                    color: 'white',
+                    border: 'none',
+                    borderRadius: '5px',
+                    cursor: 'pointer'
+                  }}
+                >
+                  Vaciar Carrito
+                </button>
+              )}
+            </div>
+          ) : (
+            <div style={{ marginTop: '20px' }}>
+              <h3>Selecciona forma de pago</h3>
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
+                <button onClick={() => pagar()} style={{ padding: '10px', backgroundColor: '#28a745', color: 'white', border: 'none', borderRadius: '5px', cursor: 'pointer' }}>
+                  Tarjeta de Débito
+                </button>
+                <button onClick={() => pagar()} style={{ padding: '10px', backgroundColor: '#17a2b8', color: 'white', border: 'none', borderRadius: '5px', cursor: 'pointer' }}>
+                  Tarjeta de Crédito
+                </button>
+                <button onClick={() => pagar()} style={{ padding: '10px', backgroundColor: '#007bff', color: 'white', border: 'none', borderRadius: '5px', cursor: 'pointer' }}>
+                  PayPal
+                </button>
+                <button 
+                  onClick={() => setModoPago(false)}
+                  style={{ padding: '10px', backgroundColor: '#6c757d', color: 'white', border: 'none', borderRadius: '5px', cursor: 'pointer' }}
+                >
+                  Cancelar
+                </button>
+              </div>
+            </div>
           )}
         </div>
       </div>
@@ -188,11 +270,25 @@ export const Body = ({ searchTerm = '' }) => {
     if (!mostrarPagoExito) return null;
 
     return (
-      <div className="popup-overlay">
+      <div className="popup-overlay active">
         <div className="popup-content">
-          <h2>¡Pago exitoso!</h2>
-          <p>Que disfrutes tus comics :D te llegará al correo la boleta</p>
-          <button onClick={vaciarCarrito}>Cerrar</button>
+          <h2>¡Pago Exitoso! 🎉</h2>
+          <p>Que disfrutes tus comics :D</p>
+          <p>Te llegará al correo la boleta de compra</p>
+          <button 
+            onClick={vaciarCarrito}
+            style={{
+              padding: '10px 20px',
+              backgroundColor: '#28a745',
+              color: 'white',
+              border: 'none',
+              borderRadius: '5px',
+              cursor: 'pointer',
+              marginTop: '20px'
+            }}
+          >
+            Cerrar
+          </button>
         </div>
       </div>
     );
@@ -205,27 +301,28 @@ export const Body = ({ searchTerm = '' }) => {
         <button 
           onClick={() => setMostrarCarrito(true)}
           style={{
-            padding: '10px 20px',
+            padding: '12px 24px',
             fontSize: '16px',
             backgroundColor: '#007bff',
             color: 'white',
             border: 'none',
-            borderRadius: '5px',
-            cursor: 'pointer'
+            borderRadius: '8px',
+            cursor: 'pointer',
+            boxShadow: '0 2px 4px rgba(0,0,0,0.2)'
           }}
         >
-          Ver Carrito ({carrito.reduce((total, item) => total + item.cantidad, 0)})
+          🛒 Ver Carrito ({carrito.reduce((total, item) => total + item.cantidad, 0)})
         </button>
       </div>
 
+      {/* Grid de productos */}
       <div className="contenedor">
         {filterProductos(productos, searchTerm).map(producto => (
           <Producto key={producto.id} producto={producto} />
         ))}
       </div>
 
-      
-
+      {/* Popups */}
       <CarritoPopup />
       <PagoExitoPopup />
     </div>

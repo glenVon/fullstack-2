@@ -123,26 +123,54 @@ header button:hover {
 }
 
 .contenedor {
-    margin-top: 20px;
-    margin-left: 16px;
+    margin: 20px 100px; /* ← MARGEN: 20px arriba/abajo, auto izquierda/derecha */
     height: auto;
     border-radius: 10px;
-    
-/* Estilos base comunes para todas las imágenes */
-.a1, .a2, .a3, .a4, .a5, .a6, .a7, .a8, 
-.a9, .a10, .a11, .a12, .a13, .a14, .a15, 
-.a16, .a17, .a18 {
-    width: 200px;
-    height: auto;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+    gap: 25px;
+    padding: 20px;
+    width: calc(100% - 40px); /* Ocupa casi todo el ancho con márgenes */
+    max-width: 1200px;        /* Límite máximo */
+}
+
+/* Estilo único para todas las imágenes de productos */
+.producto-imagen { /* CORREGIDO: era "productos-imagen" */
+    width: 217px;  /* Tamaño más pequeño pero visible */
+    height: 345px; /* Mantiene proporción 2:3 típica de cómics */
+    object-fit: cover;
+    margin-right: 100px;
     border: 5px solid #020500;
     border-radius: 10px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
     transition: transform 0.3s, box-shadow 0.3s;
-    margin-top: 9px;
-    margin-left: 16px;
+    display: block; /* Asegura que sea elemento de bloque */
 }
-   
 
+.producto-imagen:hover {
+    transform: scale(1.05);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
+}
+
+.producto {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin: 0; /* Eliminar márgenes extra */
+    padding: 0;
+}
+
+.producto-overlay {
+    position: absolute;
+    top: 8px;
+    left: 8px;
+    right: 8px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    z-index: 2;
+    width: calc(100% - 16px);
 }
 
 .footer {
@@ -233,40 +261,62 @@ button[type="submit"]:hover {
 
 .producto {
     position: relative;
-    display: inline-block;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
     margin: 10px;
 }
 
 .producto-overlay {
     position: absolute;
-    top: 8px;
-    left: 8px;
+    top: -1px;
+    left: -69px;/*este los core hacia los lados*/
     right: 8px;
     display: flex;
-    justify-content: space-between;
+    justify-content: space-between; /* ← Esto separa los elementos a los extremos */
     align-items: center;
-    z-index: 2;
+    z-index: 12;
+    width: calc(100% + 31px); /* ← Ajusta el ancho considerando el left negativo */
+    padding: 4px 1px; /* ← AGREGA padding para más separación */
 }
 
 .precio {
-    background: rgba(0,0,0,0.7);
-    color: #fff;
-    padding: 4px 8px;
-    border-radius: 6px;
+    /* margin: 2px 10px 5px 1px ; */
+    background: rgba(225, 223, 223, 0.7);
+    color: #000000;
+    padding: 6px 10px; /* ← AUMENTA: padding más generoso */
+    border-radius: 8px; /* ← AUMENTA: bordes más redondeados */
     font-weight: bold;
-    font-size: 1rem;
+    font-size: 0.9rem; /* ← AJUSTA: tamaño de fuente */
+    margin-right: auto; /* ← Empuja el carrito hacia la derecha */
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; /* ← AGREGA: fuente consistente */
 }
 
 .carrito-icono {
     background: #fff;
     border-radius: 50%;
-    padding: 4px;
+    padding: 6px; /* ← AUMENTA: padding más grande */
     cursor: pointer;
-    font-size: 1.2rem;
-    margin-left: 8px;
-    box-shadow: 0 2px 6px rgba(0,0,0,0.2);
-    transition: background 0.2s;
+    font-size: 1.1rem; /* ← AJUSTA: tamaño del icono */
+    margin-left: 38px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.3); /* ← MEJORA: sombra más pronunciada */
+    transition: all 0.3s ease; /* ← MEJORA: transición suave para todos los efectos */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 32px; /* ← AGREGA: ancho fijo */
+    height: 32px; /* ← AGREGA: alto fijo */
+    margin-left: auto; /* ← Empuja el carrito hacia la derecha */
 }
+
 .carrito-icono:hover {
-    background: #e0e0e0;
+    background: #007bff; /* ← CAMBIA: color al hacer hover */
+    color: white; /* ← AGREGA: color de texto blanco */
+    transform: scale(1.1); /* ← AGREGA: efecto de escala al hover */
+    box-shadow: 0 4px 12px rgba(0,0,0,0.4); /* ← MEJORA: sombra más intensa al hover */
+}
+
+/* Mostrar popup cuando está activo */
+.popup-overlay {
+    display: flex;
 }
